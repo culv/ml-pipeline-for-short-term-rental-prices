@@ -7,13 +7,13 @@ entry_points:
       input_artifact:
         description: Fully qualified name for the input artifact
         type: str
-      artifact_name:
+      output_artifact_name:
         description: Name for the W&B artifact that will be created
         type: str
-      artifact_type:
+      output_artifact_type:
         description: Type of the W&B artifact that will be created
         type: str
-      artifact_description:
+      output_artifact_description:
         description: Description of the W&B artifact that will be created
         type: str
       min_price:
@@ -25,8 +25,8 @@ entry_points:
 
     command: >-
       python run.py --input-artifact {input_artifact} \
-                    --artifact-name {artifact_name} \
-                    --artifact-type {artifact_type} \
-                    --artifact-description {artifact_description} \
+                    --output-artifact-name {output_artifact_name} \
+                    --output-artifact-type {output_artifact_type} \
+                    --output-artifact-description {output_artifact_description} \
                     --min-price {min_price} \
                     --max-price {max_price}

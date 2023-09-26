@@ -61,9 +61,9 @@ def go(args):
     # Create artifact and log to Weights and Biases
     logger.info("Setting up wandb artifact for cleaned data")
     artifact = wandb.Artifact(
-        name=args.artifact_name,
-        type=args.artifact_type,
-        description=args.artifact_description,
+        name=args.output_artifact_name,
+        type=args.output_artifact_type,
+        description=args.output_artifact_description,
     )
     artifact.add_file(filename)
 
@@ -89,21 +89,21 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--artifact-name", 
+        "--output-artifact-name", 
         type=str,
         help="Name for the W&B artifact that will be created",
         required=True
     )
 
     parser.add_argument(
-        "--artifact-type", 
+        "--output-artifact-type", 
         type=str,
         help="Type of the W&B artifact that will be created",
         required=True
     )
 
     parser.add_argument(
-        "--artifact-description", 
+        "--output-artifact-description", 
         type=str,
         help="Description of the W&B artifact that will be created",
         required=True
