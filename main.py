@@ -31,6 +31,9 @@ def go(config: DictConfig):
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
     os.environ["WANDB_RUN_GROUP"] = config["main"]["experiment_name"]
 
+    # Get original directory script was called from
+    cwd = hydra.utils.get_original_cwd()
+
     # Steps to execute
     steps_par = config['main']['steps']
     active_steps = steps_par.split(",") if steps_par != "all" else _steps
@@ -54,7 +57,7 @@ def go(config: DictConfig):
 
         if "basic_cleaning" in active_steps:
             _ = mlflow.run(
-                str(PARENT_DIR / "src" / "basic_cleaning"),
+                str(Path(cwd) / "src" / "basic_cleaning"),
                 "main",
                 parameters={
                     "input_artifact": config["data_cleaning"]["raw_data"],
