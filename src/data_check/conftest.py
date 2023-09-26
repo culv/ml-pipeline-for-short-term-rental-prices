@@ -69,3 +69,21 @@ def max_price(request):
         pytest.fail("You must provide max_price")
 
     return float(max_price)
+
+@pytest.fixture(scope='session')
+def min_rows(request):
+    min_rows = request.config.option.min_rows
+
+    if min_rows is None:
+        pytest.fail("You must provide min_rows")
+
+    return min_rows
+
+@pytest.fixture(scope='session')
+def max_rows(request):
+    max_rows = request.config.option.max_rows
+
+    if max_rows is None:
+        pytest.fail("You must provide max_rows")
+
+    return max_rows
