@@ -55,7 +55,7 @@ def go(args):
     # Temporarily save csv file of cleaned data
     filename = "clean_data.csv"
     logger.info(f"Temporarily saving cleaned data locally to {filename}")
-    df.to_csv(filename)
+    df.to_csv(filename, index=False)
 
 
     # Create artifact and log to Weights and Biases
