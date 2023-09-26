@@ -13,13 +13,20 @@ entry_points:
       artifact_type:
         description: Type of the W&B artifact that will be created
         type: str
-        default: raw_data
       artifact_description:
         description: Description of the W&B artifact that will be created
         type: str
+      min_price:
+        description: Minimum price for Airbnb listings, any smaller prices are removed as outliers
+        type: float
+      max_price:
+        description: Maximum price for Airbnb listings, anything larger prices are removed as outliers
+        type: float
 
     command: >-
       python run.py --input-artifact {input_artifact} \
                     --artifact-name {artifact_name} \
                     --artifact-type {artifact_type} \
-                    --artifact-description {artifact_description}
+                    --artifact-description {artifact_description} \
+                    --min-price {min_price} \
+                    --max-price {max_price}

@@ -63,7 +63,9 @@ def go(config: DictConfig):
                     "input_artifact": config["data_cleaning"]["raw_data"],
                     "artifact_name": config["data_cleaning"]["cleaned_data"],
                     "artifact_type": "cleaned_data",
-                    "artifact_description": "Cleaned data"
+                    "artifact_description": "Cleaned data",
+                    "min_price": config["etl"]["min_price"],
+                    "max_price": config["etl"]["max_price"]
                 },
             )
 
