@@ -6,9 +6,9 @@ import wandb
 def pytest_addoption(parser):
     parser.addoption("--csv", action="store")
     parser.addoption("--ref", action="store")
-    parser.addoption("--kl_threshold", action="store")
-    parser.addoption("--min_price", action="store")
-    parser.addoption("--max_price", action="store")
+    parser.addoption("--kl-threshold", action="store")
+    parser.addoption("--min-price", action="store")
+    parser.addoption("--max-price", action="store")
 
 
 @pytest.fixture(scope='session')
