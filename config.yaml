@@ -13,7 +13,11 @@ data_cleaning:
   raw_data: "sample.csv:latest"
   cleaned_data: "cleaned_data.csv"
 data_check:
+  sample_data: cleaned_data.csv:latest
+  reference_data: cleaned_data.csv:reference
   kl_threshold: 0.2
+  min_rows: 15000
+  max_rows: 1000000
 modeling:
   # Fraction of data to use for test (the remaining will be used for train and validation)
   test_size: 0.2

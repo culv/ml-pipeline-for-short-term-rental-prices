@@ -65,6 +65,6 @@ def test_row_count(data: pd.DataFrame, min_rows: int, max_rows: int):
     assert min_rows < len(data) < max_rows
 
 
-def test_price_range(data: pd.DataFrame, min_price: int, max_price: int)
+def test_price_range(data: pd.DataFrame, min_price: int, max_price: int):
     """ Ensure that the price of Airbnb listings falls within the desired range """
     assert data["price"].max() <= max_price and data["price"].min() >= min_price
