@@ -9,6 +9,9 @@ etl:
   sample: "sample1.csv"
   min_price: 10 # dollars
   max_price: 350 # dollars
+data_cleaning:
+  raw_data: "sample.csv:latest"
+  cleaned_data: "cleaned_data.csv"
 data_check:
   kl_threshold: 0.2
 modeling:

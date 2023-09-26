@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import mlflow
 import tempfile
@@ -6,6 +7,8 @@ import os
 import wandb
 import hydra
 from omegaconf import DictConfig
+
+PARENT_DIR = Path(__file__).parent
 
 _steps = [
     "download",
@@ -21,7 +24,7 @@ _steps = [
 
 
 # This automatically reads in the configuration
-@hydra.main(config_name='config')
+@hydra.main(version_base=None, config_path=str(PARENT_DIR), config_name='config')
 def go(config: DictConfig):
 
     # Setup the wandb experiment. All runs will be grouped under this name
@@ -50,10 +53,16 @@ def go(config: DictConfig):
             )
 
         if "basic_cleaning" in active_steps:
-            ##################
-            # Implement here #
-            ##################
-            pass
+            _ = mlflow.run(
+                str(PARENT_DIR / "src" / "basic_cleaning"),
+                "main",
+                parameters={
+                    "input_artifact": config["data_cleaning"]["raw_data"],
+                    "artifact_name": config["data_cleaning"]["cleaned_data"],
+                    "artifact_type": "cleaned_data",
+                    "artifact_description": "Cleaned data"
+                },
+            )
 
         if "data_check" in active_steps:
             ##################
