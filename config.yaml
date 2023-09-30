@@ -1,10 +1,10 @@
 main:
-  components_repository: "https://github.com/udacity/build-ml-pipeline-for-short-term-rental-prices#components"
+  components_repository: "https://github.com/culv/ml-pipeline-for-short-term-rental-prices#components"
   # All the intermediate files will be copied to this directory at the end of the run.
   # Set this to null if you are running in prod
-  project_name: nyc_airbnb
-  experiment_name: development
-  steps: all
+  project_name: "nyc_airbnb"
+  experiment_name: "development"
+  steps: "all"
 etl:
   sample: "sample1.csv"
   min_price: 10 # dollars
@@ -13,11 +13,13 @@ data_cleaning:
   raw_data: "sample.csv:latest"
   cleaned_data: "cleaned_data.csv"
 data_check:
-  sample_data: cleaned_data.csv:latest
-  reference_data: cleaned_data.csv:reference
+  sample_data: "cleaned_data.csv:latest"
+  reference_data: "cleaned_data.csv:reference"
   kl_threshold: 0.2
   min_rows: 15000
   max_rows: 1000000
+data_split:
+  input_data: "cleaned_data.csv:latest"
 modeling:
   # Fraction of data to use for test (the remaining will be used for train and validation)
   test_size: 0.2
