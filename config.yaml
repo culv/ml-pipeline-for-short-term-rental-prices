@@ -21,6 +21,8 @@ data_check:
 data_split:
   input_data: "cleaned_data.csv:latest"
 modeling:
+  train_val_data: "trainval_data.csv:latest"
+  output_artifact: "random_forest_export"
   # Fraction of data to use for test (the remaining will be used for train and validation)
   test_size: 0.2
   # Fraction of remaining data to use for validation
@@ -41,7 +43,7 @@ modeling:
     min_samples_leaf: 3
     # Here -1 means all available cores
     n_jobs: -1
-    criterion: mae
+    criterion: "absolute_error"
     max_features: 0.5
     # DO not change the following
     oob_score: true
