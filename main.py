@@ -56,6 +56,7 @@ def go(config: DictConfig):
             )
 
         if "basic_cleaning" in active_steps:
+            # Clean the raw data
             _ = mlflow.run(
                 str(Path(cwd) / "src" / "basic_cleaning"),
                 "main",
@@ -70,6 +71,7 @@ def go(config: DictConfig):
             )
 
         if "data_check" in active_steps:
+            # Run data tests on the cleaned data
             _ = mlflow.run(
                 str(Path(cwd) / "src" / "data_check"),
                 "main",
@@ -85,6 +87,7 @@ def go(config: DictConfig):
             )
 
         if "data_split" in active_steps:
+            # Split data into a test dataset and a train/validation dataset
             _ = mlflow.run(
                 f"{config['main']['components_repository']}/train_val_test_split",
                 "main",
@@ -98,7 +101,7 @@ def go(config: DictConfig):
             )
 
         if "train_random_forest" in active_steps:
-
+            # Train a random forest regression model
             # NOTE: we need to serialize the random forest configuration into JSON
             rf_config = os.path.abspath("rf_config.json")
             with open(rf_config, "w+") as fp:
@@ -120,14 +123,17 @@ def go(config: DictConfig):
                 },
             )
 
-
         if "test_regression_model" in active_steps:
-
-            ##################
-            # Implement here #
-            ##################
-
-            pass
+            # Evaluate the trained model on test data
+            _ = mlflow.run(
+                f"{config['main']['components_repository']}/test_regression_model",
+                "main",
+                version='main',
+                parameters={
+                    "mlflow_model": config["test_model"]["model"],
+                    "test_dataset": config["test_model"]["data"]
+                },
+            )
 
 
 if __name__ == "__main__":
