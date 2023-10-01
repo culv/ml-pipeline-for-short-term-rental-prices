@@ -34,7 +34,7 @@ The pipeline currently has the following components:
 
 ## Weights and Biases
 This pipeline saves all models, datasets, and metrics to Weights and Biases. All experiments done so
-far can be found [here in this public W&B project](https://wandb.ai/culv/nyc_airbnb/overview?workspace=user-culv)
+far can be found [here in this public W&B project](https://wandb.ai/culv/nyc_airbnb/overview)
 
 
 ## Project Setup
@@ -79,7 +79,7 @@ override config["main"]["experiment_name"] like so:
 
 Hydra is also useful for doing hyperparameter sweeps by varying the model parameters. For example:
 ```bash
-mlflow run . -P hydra_options='modeling.max_tf_idf_features=5,10,25 modeling.random_forest.max_features=0.25,0.5,0.75,1 -m
+> mlflow run . -P hydra_options='modeling.max_tf_idf_features=5,10,25 modeling.random_forest.max_features=0.25,0.5,0.75,1 -m'
 ```
 
 NOTE: It's highly recommended to update ``config.yaml`` with the best hyperparameters you've found
