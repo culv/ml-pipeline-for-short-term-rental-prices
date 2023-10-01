@@ -16,6 +16,7 @@ def go(args):
     """ Perform data cleaning on the raw input data. Currently this involves:
         * dropping duplicate rows
         * dropping rows with outlier prices
+        * dropping rows with properties outside of NYC
         * casting the "last_review" column to a datetime
     """
     run = wandb.init(job_type="basic_cleaning")
@@ -50,6 +51,16 @@ def go(args):
     logger.info(f"Dataframe size after removing price outliers: {df.shape}")
     logger.info(f"Dropped {start_len - len(df)} price outlier rows")
 
+    # Filter out properties outside of NYC
+    logger.info("Removing properties outside NYC")
+    logger.info(f"Dataframe size before removing outliers: {df.shape}")
+    start_len = len(df)
+
+    idx = df["longitude"].between(-74.25, -73.5) & df["latitude"].between(40.5, 41.2)
+    df = df[idx].copy()
+    
+    logger.info(f"Dataframe size after removing properties outside NYC: {df.shape}")
+    logger.info(f"Dropped {start_len - len(df)} properties outside NYC")
 
     # Correct the datatype of the last_reviewed column from str to datetime
     logger.info("Converting 'last_reviewed' from str to datetime")
