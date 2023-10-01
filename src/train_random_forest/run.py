@@ -76,12 +76,14 @@ def go(args):
 
     logger.info(f"Minimum price: {y.min()}, Maximum price: {y.max()}")
 
+    # Split into train and validation sets
     X_train, X_val, y_train, y_val = train_test_split(
         X, y, test_size=args.val_size, stratify=X[args.stratify_by], random_state=args.random_seed
     )
 
     logger.info("Preparing sklearn pipeline")
 
+    # Create pipeline to train random forest regression model
     sk_pipe, processed_features = get_inference_pipeline(rf_config, args.max_tfidf_features)
 
     # Then fit it to the X_train, y_train data
@@ -99,36 +101,39 @@ def go(args):
     logger.info(f"Score: {r_squared}")
     logger.info(f"MAE: {mae}")
 
-    logger.info("Exporting model")
+    # Only save model export if specified (this will help speed up hyperparameter tuning)
+    if args.output_artifact != "null":
+        logger.info("Exporting model")
 
-    # Get the input/output signature of the model from the validation dataframe
-    # Fix string columns whose dtype is "object"
-    str_cols = ["name", "host_name", "neighbourhood_group", "neighbourhood", "room_type", "last_review"]
-    X_val = cast_columns_to_dtype(X_val, str_cols, "string")
-    signature = mlflow.models.infer_signature(X_val, y_pred)
+        # Get the input/output signature of the model from the validation dataframe
+        # NOTE: first we need to fix string columns whose dtype is "object"
+        str_cols = ["name", "host_name", "neighbourhood_group", "neighbourhood", "room_type", "last_review"]
+        X_val = cast_columns_to_dtype(X_val, str_cols, "string")
+        signature = mlflow.models.infer_signature(X_val, y_pred)
 
-    # Save model package in the MLFlow sklearn format
-    model_dir = "random_forest_dir"
-    if os.path.exists(model_dir):
-        shutil.rmtree(model_dir)
+        # Save model package in the MLFlow sklearn format
+        model_dir = "random_forest_dir"
+        if os.path.exists(model_dir):
+            shutil.rmtree(model_dir)
 
-    mlflow.sklearn.save_model(
-        sk_pipe,
-        model_dir,
-        serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
-        signature=signature,
-        input_example=X_val.iloc[:5],
-    )
+        mlflow.sklearn.save_model(
+            sk_pipe,
+            model_dir,
+            serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
+            signature=signature,
+            input_example=X_val.iloc[:5],
+        )
 
-    model_artifact = wandb.Artifact(
-        args.output_artifact,
-        type="model_export",
-        description="Random Forest pipeline export",
-    )
-    model_artifact.add_dir(model_dir)
+        # Push model package to Weights and Biases
+        model_artifact = wandb.Artifact(
+            args.output_artifact,
+            type="model_export",
+            description="Random Forest pipeline export",
+        )
+        model_artifact.add_dir(model_dir)
 
-    run.log_artifact(model_artifact)
-    model_artifact.wait() 
+        run.log_artifact(model_artifact)
+        model_artifact.wait() 
 
     # Plot feature importance
     fig_feat_imp = plot_feature_importance(sk_pipe, processed_features)

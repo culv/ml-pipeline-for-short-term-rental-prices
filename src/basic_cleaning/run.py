@@ -13,7 +13,11 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
 
 def go(args):
-
+    """ Perform data cleaning on the raw input data. Currently this involves:
+        * dropping duplicate rows
+        * dropping rows with outlier prices
+        * casting the "last_review" column to a datetime
+    """
     run = wandb.init(job_type="basic_cleaning")
     run.config.update(args)
 
@@ -119,7 +123,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--max-price", 
         type=float,
-        help="Maximum price for Airbnb listings, anything larger prices are removed as outliers",
+        help="Maximum price for Airbnb listings, any larger prices are removed as outliers",
         required=True
     )
 

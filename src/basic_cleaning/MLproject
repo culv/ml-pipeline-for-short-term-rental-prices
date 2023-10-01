@@ -20,7 +20,7 @@ entry_points:
         description: Minimum price for Airbnb listings, any smaller prices are removed as outliers
         type: float
       max_price:
-        description: Maximum price for Airbnb listings, anything larger prices are removed as outliers
+        description: Maximum price for Airbnb listings, any larger prices are removed as outliers
         type: float
 
     command: >-
